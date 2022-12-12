@@ -17,7 +17,9 @@ public class UsuariosDAO {
             Statement sent = con.createStatement();
             
             // Extraemos el rol del usuario y su contraseña
-            ResultSet rest = sent.executeQuery("SELECT contrasenia,id_rol FROM USUARIOS WHERE usuario='"+usr+"'");
+            ResultSet rest = sent.executeQuery("SELECT contrasenia,"
+                                             + "id_rol FROM USUARIOS "
+                                             + "WHERE usuario='"+usr+"'");
             rest.next();
 
             String pass = rest.getString(1);
@@ -46,6 +48,7 @@ public class UsuariosDAO {
             return null;
         }
     }
+    
     public void insertIntoUsr(String tabla, String usr, String pass, int id_rol){
         try (Connection con = DriverManager.getConnection(URL, USER, PASS)){
                 
@@ -124,6 +127,7 @@ public class UsuariosDAO {
             e.printStackTrace();
         }
     }
+    
     public String[] getRoles(){
         try {
             // Establecemos conexión
@@ -159,6 +163,7 @@ public class UsuariosDAO {
         }
         
     }
+    
     public int getIdRol(String rol){
         try {
             // Establecemos conexión
@@ -226,7 +231,7 @@ public class UsuariosDAO {
             
             // Preparamos la sentencia para encontrar al usuario
             CallableStatement sent;
-            if(campo.equals("usuario")){
+            if(campo.equals("Usuario")){
                 sent = con.prepareCall("{? = call selectOneUsr_User(?)}");
                 sent.setString(2, valor);
             }else{

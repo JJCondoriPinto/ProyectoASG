@@ -16,6 +16,7 @@ public class ArduinoDAO{
             status = 0;
         }
     }
+    
     public void abrir() {
         try {
             Arduino.sendData("0");
@@ -38,3 +39,5 @@ public class ArduinoDAO{
         return this.status;
     }
 }
+
+

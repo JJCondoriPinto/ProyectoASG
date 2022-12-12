@@ -65,6 +65,7 @@ public class ControlASGLogin implements ActionListener{
             }
         }
     }
+    
     public static void main(String[] args) {
         UsuariosDAO usrDao = new UsuariosDAO();
         ViewLogin vistLog = new ViewLogin();

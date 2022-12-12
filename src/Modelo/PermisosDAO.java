@@ -173,7 +173,12 @@ public class PermisosDAO {
                                                      "JOIN ROLES_USER R ON P.ID_ROL = R.ID_ROL " +
                                                      "WHERE %s=?".formatted(campos[campo]));
             if(campo == 0) // Si es NUM AULA (número)
-                sent.setInt(1, Integer.parseInt(val));
+                try{
+                    sent.setInt(1, Integer.parseInt(val));
+                }catch(NumberFormatException ex){
+                    throw new SQLSyntaxErrorException();
+                }
+            
             else // Si no es Num Aula, entonces es String o varchar
                 sent.setString(1, val);
             
@@ -195,6 +200,8 @@ public class PermisosDAO {
             con.close();
         }catch(SQLException ex){
             ex.printStackTrace();
+            if(ex instanceof SQLSyntaxErrorException)
+                JOptionPane.showMessageDialog(null, "Valor no valido", "Number Format Exception", 2);
         }
     }
     
@@ -209,7 +216,7 @@ public class PermisosDAO {
             sent.setInt(1, codAula);
             sent.setInt(2, idRol);
             
-            // Ejecutamos la sentencia y extraemos la respuesta
+            // Ejecutamos la sentencia
             sent.execute();
             JOptionPane.showMessageDialog(null, "Permiso asignado","Insert Perm",1);
         } catch (SQLException ex) {

@@ -82,12 +82,66 @@ public class ViewGest extends JFrame{
     public JButton aplicarFiltroPerm;
     public JButton aplicarBusquedaPerm;
     
-    // Atributos para pestaña 3 (Información Completa)
+    // Atributos para pestaña 3 (Gestión adicional)
+    private final JTabbedPane pGestionAd;
     
+    // Primera sub pestaña (Gestión usuarios y carreras)
+    private final JPanel pGestionAd_UsrCarr;
+    
+    private final JPanel panUsrCarr_Regis;
+    private final JLabel[] etiqUsrCarr;
+    public JTextField[] inputUsrCarr;
+    public JButton addUsrCarr;
+    public JButton dropUsrCarr;
+    
+    private final JPanel panReportUsrCarr;
+    public DefaultTableModel modelReportUsrCarr;
+    private final JScrollPane contentReportUsrCarr;
+    private final JTable reportUsrCarr;
+    
+    private final JPanel panReportCarr;
+    public DefaultTableModel modelReportCarr;
+    private final JScrollPane contentReportCarr;
+    private final JTable reportCarr;
+    
+    private final JPanel panReportDept;
+    public DefaultTableModel modelReportDept;
+    private final JScrollPane contentReportDept;
+    private final JTable reportDept;
+    
+    // Segunda sub pestaña (Arduinos Disponibles)
+    private final JPanel pArduinos;
+    
+    // Sub panel para consulta de arduinos disponibles
+    private final JPanel panConsultArd;
+    
+    // Etiquetas para sub panel
+    private final JLabel[][] etiqConsultArd;
+    public JComboBox<String> input1ConsultArdOrd;
+    public JComboBox<String> input1ConsultArdFilt;
+    public JComboBox<String> input1ConsultArdBusq;
+    
+    public ButtonGroup input2ConsultArdOrd;
+    public JRadioButton consultArdAsc;
+    public JRadioButton consultArdDesc;
+    
+    public JTextField input2ConsultArdFilt;
+    public JTextField input2ConsultArdBusq;
+    
+    public JButton aplicarArdOrd;
+    public JButton aplicarArdFilt;
+    public JButton aplicarArdBusq;
+    
+    // Sub panel para reporte de arduinos
+    private final JPanel panReportArd;
+    public DefaultTableModel modelReportArd;
+    private final JScrollPane contReportArd;
+    private final JTable reportArd;
     
     // Inicialización de Frame y atributos 
     public ViewGest(){
         setSize(500,500);
+        setTitle("Gestión Administrativa");
         
         pestañas = new JTabbedPane();
         
@@ -434,6 +488,192 @@ public class ViewGest extends JFrame{
         panOption3Perm.add(aplicarBusquedaPerm);
         aplicarBusquedaPerm.setBounds(45, 90+40*i, 60, 20);
         
+        // PESTAÑA 3 ********************** GESTION ADICIONAL ******************
+        pGestionAd = new JTabbedPane();
+        pestañas.addTab("Gestion Adicional", pGestionAd);
+        
+        // Sub pestaña 1 (Gestión de usuarios y carreras)
+        pGestionAd_UsrCarr = new JPanel(null);
+        pGestionAd.addTab("Usuarios y carreras", pGestionAd_UsrCarr);
+        
+        // Iniciamos un sub panel para el registro de usuarios y carreras
+        panUsrCarr_Regis = new JPanel(null);
+        panUsrCarr_Regis.setBorder(BorderFactory.createTitledBorder("Inserción Usuario - Carrera"));
+        pGestionAd_UsrCarr.add(panUsrCarr_Regis);
+        panUsrCarr_Regis.setBounds(20, 20, 190, 160);
+        
+        String[] camposInputUsrCarr = {"Id de Usuario","Id de Carrera"};
+        etiqUsrCarr = new JLabel[camposInputUsrCarr.length];
+        inputUsrCarr = new JTextField[camposInputUsrCarr.length];
+        for(i = 0; i < etiqUsrCarr.length; i++){
+            // Etiquetas Label
+            etiqUsrCarr[i] = new JLabel(camposInputUsrCarr[i]);
+            panUsrCarr_Regis.add(etiqUsrCarr[i]);
+            etiqUsrCarr[i].setBounds(20, 37+(40*i), 100, 16);
+            
+            // Inputs
+            inputUsrCarr[i] = new JTextField();
+            panUsrCarr_Regis.add(inputUsrCarr[i]);
+            inputUsrCarr[i].setBounds(120, 37+(40*i), 50, 20);
+        }
+        
+        addUsrCarr = new JButton("Asignar");
+        dropUsrCarr = new JButton("Quitar");
+        
+        panUsrCarr_Regis.add(addUsrCarr);
+        panUsrCarr_Regis.add(dropUsrCarr);
+        
+        addUsrCarr.setBounds(20, 37+(40*i), 70, 20);
+        addUsrCarr.setMargin(new Insets(0, 0, 0, 0));
+        dropUsrCarr.setBounds(100, 37+(40*i), 70, 20);
+        dropUsrCarr.setMargin(new Insets(0, 0, 0, 0));
+        
+        // Sub panel para el reporte de carreras
+        
+        panReportCarr = new JPanel(null);
+        panReportCarr.setBorder(BorderFactory.createTitledBorder("Reporte de Carreras"));
+        pGestionAd_UsrCarr.add(panReportCarr);
+        panReportCarr.setBounds(210, 20, 255, 160);
+        
+        String[] camposCarr = {"Id Carrera","Nom Carrera","Id Depto"};
+        modelReportCarr = new DefaultTableModel();
+        for(String campo : camposCarr)
+            modelReportCarr.addColumn(campo);
+        reportCarr = new JTable(modelReportCarr);
+        
+        contentReportCarr = new JScrollPane(reportCarr);
+        panReportCarr.add(contentReportCarr);
+        contentReportCarr.setBounds(20, 30, 215, 110);
+        
+        // Sub panel para el reporte de departamentos
+        
+        panReportDept = new JPanel(null);
+        panReportDept.setBorder(BorderFactory.createTitledBorder("Reporte de Departamentos"));
+        pGestionAd_UsrCarr.add(panReportDept);
+        panReportDept.setBounds(230, 180, 235, 215);
+        
+        String[] camposReportDept = {"Id Depto","Nom Depto"};
+        modelReportDept = new DefaultTableModel();
+        for(String campo : camposReportDept)
+            modelReportDept.addColumn(campo);
+        reportDept = new JTable(modelReportDept);
+        
+        contentReportDept = new JScrollPane(reportDept);
+        panReportDept.add(contentReportDept);
+        contentReportDept.setBounds(20, 30, 195, 175);
+        
+        // Sub panel para reporte de usuarios y carreras
+        
+        panReportUsrCarr = new JPanel(null);
+        panReportUsrCarr.setBorder(BorderFactory.createTitledBorder("Reporte de Usuarios y Carreras"));
+        pGestionAd_UsrCarr.add(panReportUsrCarr);
+        panReportUsrCarr.setBounds(20, 180, 210, 215);
+        
+        String[] camposReportUsrCarr = {"Id Usuario","Id Carrera"};
+        modelReportUsrCarr = new DefaultTableModel();
+        for(String campo : camposReportUsrCarr)
+            modelReportUsrCarr.addColumn(campo);
+        
+        reportUsrCarr = new JTable(modelReportUsrCarr);
+        
+        contentReportUsrCarr = new JScrollPane(reportUsrCarr);
+        panReportUsrCarr.add(contentReportUsrCarr);
+        contentReportUsrCarr.setBounds(20, 30, 170, 175);
+        
+        // Sub pestaña 2 (Consulta de arduinos disponibles)
+        pArduinos = new JPanel(null);
+        pGestionAd.add("Arduinos",pArduinos);
+        
+        // Sub panel para las consultas de arduinos
+        panConsultArd = new JPanel(null);
+        panConsultArd.setBorder(BorderFactory.createTitledBorder("Controlador de Consultas"));
+        pArduinos.add(panConsultArd);
+        panConsultArd.setBounds(20, 20, 440, 160);
+        
+        String[][] consultasArd =  {{"Ordenamiento","Filtrado","Búsqueda"},
+                                    {"Forma","Condición","Valor"}};
+        String[] camposReportArd = {"Id Arduino","Cod Aula","Num Aula","Id Pab","Pabellon"};
+        input1ConsultArdBusq = new JComboBox<>(camposReportArd);
+        input1ConsultArdFilt = new JComboBox<>(camposReportArd);
+        input1ConsultArdOrd = new JComboBox<>(camposReportArd);
+        
+        etiqConsultArd = new JLabel[consultasArd.length][3];
+        for(i = 0; i < etiqConsultArd.length; i++){
+            for(int j = 0; j < etiqConsultArd[i].length; j++){
+                etiqConsultArd[i][j] = new JLabel(consultasArd[i][j],SwingConstants.CENTER);
+                panConsultArd.add(etiqConsultArd[i][j]);
+                if(i==0)
+                    etiqConsultArd[i][j].setBounds(20+150*j, 25, 100, 16);
+                else{
+                    panConsultArd.add(input1ConsultArdBusq);
+                    input1ConsultArdBusq.setBounds(20, 45, 100, 20);
+                    
+                    panConsultArd.add(input1ConsultArdFilt);
+                    input1ConsultArdFilt.setBounds(170, 45, 100, 20);
+                    
+                    panConsultArd.add(input1ConsultArdOrd);
+                    input1ConsultArdOrd.setBounds(320, 45, 100, 20);
+                    
+                    etiqConsultArd[i][j].setBounds(20+150*j, 75, 100, 16);
+                }
+            }
+        }
+        
+        // Ordenamiento
+        input2ConsultArdOrd = new ButtonGroup();
+        consultArdAsc = new JRadioButton("Asc");
+        input2ConsultArdOrd.add(consultArdAsc);
+        panConsultArd.add(consultArdAsc);
+        consultArdAsc.setBounds(17, 95, 50, 16);
+        
+        consultArdDesc = new JRadioButton("Desc");
+        input2ConsultArdOrd.add(consultArdDesc);
+        panConsultArd.add(consultArdDesc);
+        consultArdDesc.setBounds(67, 95, 70, 16);
+        
+        aplicarArdOrd = new JButton("Aplicar Orden");
+        aplicarArdOrd.setMargin(new Insets(0, 0, 0, 0));
+        panConsultArd.add(aplicarArdOrd);
+        aplicarArdOrd.setBounds(20, 125, 100, 20);
+        
+        // Filtrado
+        input2ConsultArdFilt = new JTextField();
+        input2ConsultArdFilt.setMargin(new Insets(2,1,2,1));
+        panConsultArd.add(input2ConsultArdFilt);
+        input2ConsultArdFilt.setBounds(170, 95, 100, 20);
+        
+        aplicarArdFilt = new JButton("Aplicar Filtro");
+        aplicarArdFilt.setMargin(new Insets(0, 0, 0, 0));
+        panConsultArd.add(aplicarArdFilt);
+        aplicarArdFilt.setBounds(170, 125, 100, 20);
+        
+        // Búsqueda
+        input2ConsultArdBusq = new JTextField();
+        input2ConsultArdBusq.setMargin(new Insets(2,1,2,1));
+        panConsultArd.add(input2ConsultArdBusq);
+        input2ConsultArdBusq.setBounds(320, 95, 100, 20);
+        
+        aplicarArdBusq = new JButton("Aplicar Búsq");
+        aplicarArdBusq.setMargin(new Insets(0, 0, 0, 0));
+        panConsultArd.add(aplicarArdBusq);
+        aplicarArdBusq.setBounds(320, 125, 100, 20);
+        
+        // Sub panel para el reporte de arduinos
+        panReportArd = new JPanel(null);
+        panReportArd.setBorder(BorderFactory.createTitledBorder("Reporte de Arduinos"));
+        pArduinos.add(panReportArd);
+        panReportArd.setBounds(20, 180, 440, 210);
+
+        modelReportArd = new DefaultTableModel();
+        for(String campo : camposReportArd)
+            modelReportArd.addColumn(campo);
+        
+        reportArd = new JTable(modelReportArd);
+        
+        contReportArd = new JScrollPane(reportArd);
+        panReportArd.add(contReportArd);
+        contReportArd.setBounds(10, 30, 420, 170);
+        
         // PARAMETROS FINALES DE JFRAME
         
         getContentPane().add(pestañas); // Añade como ontenido al panel de pestañas
@@ -441,8 +681,10 @@ public class ViewGest extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE); // Finaliza el programa al cerrar Frame
         setResizable(false); // Tamaño fijo
     }
+    /*   Prueba de vista
     public static void main(String[] args) { // Main para probar la vista
         ViewGest a = new ViewGest();
         a.setVisible(true);
     }
+    */
 }

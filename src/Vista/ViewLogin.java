@@ -84,7 +84,10 @@ public class ViewLogin extends JFrame{
         setLocationRelativeTo(null);
         setResizable(false);
     }
+    /* Prueba de vista
     public static void main(String[] args) {
         ViewLogin a = new ViewLogin();
+        a.setVisible(true);
     }
+    */
 }
